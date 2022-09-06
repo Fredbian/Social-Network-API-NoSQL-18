@@ -1,0 +1,25 @@
+{
+  "name": "social-network-api-nosql-18",
+  "version": "1.0.0",
+  "description": "This Challenge is to build an API for a social network web application where users can share their thoughts, react to friends’ thoughts, and create a friend list. Using Express.js for routing, a MongoDB database, and the Mongoose ODM.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fredbian/Social-Network-API-NoSQL-18.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Fredbian/Social-Network-API-NoSQL-18/issues"
+  },
+  "homepage": "https://github.com/Fredbian/Social-Network-API-NoSQL-18#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "mongoose": "^6.5.4"
+  }
+}
