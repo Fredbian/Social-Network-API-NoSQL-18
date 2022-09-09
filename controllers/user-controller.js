@@ -1,5 +1,5 @@
 // import models
-const { User, Thought } = require('../models')
+const { User } = require('../models/User')
 
 
 // set up user controller
