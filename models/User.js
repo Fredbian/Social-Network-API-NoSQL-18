@@ -26,13 +26,12 @@ const userSchema = new Schema(
         }]
     },
     {
-        timestamps: true,
-        id: true
-    },
-    {
         toJSON: {
-            virtual: true            
-        }     
+            virtual: true,
+            getters: true            
+        },
+        id:false
+
     }
 )
 
