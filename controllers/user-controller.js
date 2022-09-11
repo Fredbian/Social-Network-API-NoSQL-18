@@ -1,6 +1,5 @@
 // import models
-const { User } = require('../models/User')
-
+const { User, Thought } = require('../models')
 
 // set up user controller
 const userController = {
@@ -8,15 +7,13 @@ const userController = {
     // GET All user
     getAllUser(req, res) {
         User.find({})
-            .then(userData => {
-                res.json(userData)
-            })
+            .then(userData => res.json(userData))
             .catch(err => res.status(400).json(err))
     },
 
     // GET One user by id
-    getUserById({ params }, res) {
-        User.findOne({ _id: params.id })
+    getUserById(req, res) {
+        User.findOne({ _id: req.params.userId })
             // thoughts
             .populate('thoughts')
             // friends
@@ -34,23 +31,22 @@ const userController = {
     },
 
     // Create new user
-    createUser({ body }, res) {
-        User.create(body)
+    createUser(req, res) {
+        User.create(req.body)
             .then(userData => res.json(userData))
-            .catch(err => res.status(400).json(err));
+            .catch(err => res.status(400).json(err))
     },
 
     // Update a user by id
-    updateUser({ params, body }, res) {
+    updateUser(req, res) {
         User.findOneAndUpdate(
-            { _id: params.id },
-            body, 
+            { _id: req.params.userId },
+            { $set: req.body },
             { new: true, runValidators: true }
-            )
+        )
             .then(userData => {
                 if (!userData) {
-                    return res.status(404).json({ message: 'No user found with this ID!' });
-                    ;
+                    return res.status(404).json({ message: 'No user found with this ID!' })
                 } else {
                     return res.json(userData)
                 }
@@ -58,12 +54,14 @@ const userController = {
             .catch(err => res.status(400).json(err))
     },
 
-    // Delete a user by id --------- bonus not complete yet
-    deleteUser({ params }, res) {
-        User.findOneAndDelete({ _id: params.id })
+    // Delete a user by id --------- bonus: delete thoughts when delete a user
+    deleteUser(req, res) {
+        User.findOneAndDelete({ _id: req.params.userId })
             .then(userData => {
-                if (userData) {
+                if (!userData) {
                     return res.status(404).json({ message: 'No user found with this ID!' })
+                } else {
+                    Thought.deleteMany({ _id: { $in: user.thoughts } })
                 }
             })
             .then(() => res.json({ message: 'Delete Success!' }))
@@ -71,11 +69,11 @@ const userController = {
     },
 
     // Add friends --- /api/user/:userId/friends/:friendId
-    addFriend({ params }, res) {
+    addFriend(req, res) {
         User.findOneAndUpdate(
-            { _id: params.userId },
-            { $push: { friends: params.friendId } },
-            { new: true }
+            { _id: req.params.userId },
+            { $addToSet: { friends: req.params.friendId } },
+            { new: true, runValidators: true }
         )
             .then(userData => {
                 if (!userData) {
@@ -88,10 +86,10 @@ const userController = {
     },
 
     // Delete friends
-    deleteFriend({ params }, res) {
+    deleteFriend(req, res) {
         User.findOneAndUpdate(
-            { _id: params.userId },
-            { $pull: { friends: params.friendId } },
+            { _id: req.params.userId },
+            { $pull: { friends: req.params.friendId } },
             { new: true }
         )
             .then(userData => {

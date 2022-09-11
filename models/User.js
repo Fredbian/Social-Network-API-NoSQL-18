@@ -1,5 +1,5 @@
 // import mongoose
-const { Schema, model } = require('mongoose')
+const { Schema, model, Types } = require('mongoose')
 
 const userSchema = new Schema(
     {
@@ -14,21 +14,20 @@ const userSchema = new Schema(
             required: true,
             unique: true,
             // email validation regex
-            match: [/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/]
+            match: [/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/, "Please fill a valid email address"]
         },
         thoughts: [{
             type: Schema.Types.ObjectId,
-            ref: 'thought'
+            ref: 'Thought'
         }],
         friends: [{
             type: Schema.Types.ObjectId,
-            ref: 'user'
+            ref: 'User'
         }]
     },
     {
         toJSON: {
-            virtual: true,
-            getters: true            
+            virtual: true        
         },
         id:false
 
@@ -42,7 +41,7 @@ userSchema.virtual('friendCount').get(function() {
 
 
 // create User model with Schema
-const User = model('user', userSchema)
+const User = model('User', userSchema)
 
 // export User model
 module.exports = User
