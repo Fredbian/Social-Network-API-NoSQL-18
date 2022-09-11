@@ -1,5 +1,6 @@
 // import models
-const { User, Thought } = require('../models')
+const { User, Thought } = require("../models")
+
 
 // set up user controller
 const userController = {
@@ -54,19 +55,19 @@ const userController = {
             .catch(err => res.status(400).json(err))
     },
 
-    // Delete a user by id --------- bonus: delete thoughts when delete a user
+ 
+    //delete a user by id ----bonus: delete a user and also delete thoughts
     deleteUser(req, res) {
         User.findOneAndDelete({ _id: req.params.userId })
-            .then(userData => {
-                if (!userData) {
-                    return res.status(404).json({ message: 'No user found with this ID!' })
-                } else {
-                    Thought.deleteMany({ _id: { $in: user.thoughts } })
-                }
-            })
-            .then(() => res.json({ message: 'Delete Success!' }))
-            .catch(err => res.status(400).json(err))
+            .then((user) =>
+                !user
+                    ? res.status(404).json({ message: "No User find with this ID!" })
+                    : Thought.deleteMany({ _id: { $in: user.thoughts } })
+            )
+            .then(() => res.json({ message: "User and Thought deleted!" }))
+            .catch((err) => res.status(500).json(err));
     },
+
 
     // Add friends --- /api/user/:userId/friends/:friendId
     addFriend(req, res) {

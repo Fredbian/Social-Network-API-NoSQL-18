@@ -35,11 +35,9 @@ const thoughtController = {
                 )
             })
             .then(thought => {
-                if (!thought) {
-                    return res.status(404).json({ message: 'No user found with this ID!' });
-                } else {
-                    return res.json(userData)
-                }
+                !thought
+                    ? res.status(404).json({ message: "No User find with this ID!" })
+                    : res.json(thought)
             })
             .catch(err => res.status(400).json(err))
     },
@@ -71,8 +69,8 @@ const thoughtController = {
                     return res.status(404).json({ message: 'No thought found with this ID!' })
                 } else {
                     return User.findOneAndUpdate(
-                        { _id: params.userId },
-                        { $pull: { thoughts: params.thoughtId } },
+                        { thoughts: req.params.thoughtId },
+                        { $pull: { thoughts: req.params.thoughtId } },
                         { new: true }
                     )
                 }
@@ -81,7 +79,7 @@ const thoughtController = {
                 if (!userData) {
                     return res.status(404).json({ message: 'No user found with this ID!' });
                 } else {
-                    return res.json(userData)
+                    return res.json({ message: 'Delete Success!' })
                 }
             })
             .catch(err => res.status(400).json(err))
@@ -90,7 +88,7 @@ const thoughtController = {
     // Create reaction
     createReaction(req, res) {
         Thought.findOneAndUpdate(
-            { _id: params.thoughtId },
+            { _id: req.params.thoughtId },
             { $addToSet: { reactions: req.body } },
             { new: true, runValidators: true }
         )
