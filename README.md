@@ -44,4 +44,4 @@ npm start
 
 ## URLs
 * Github: https://github.com/Fredbian/Social-Network-API-NoSQL-18 
-* Walkthrough Video: https://drive.google.com/file/d/152y7i5heh6Iiuls3NaBYP2VMM5ChO7QU/view 
+* Walkthrough Video: https://drive.google.com/file/d/13qXVrLbicFdcjZSJNGDbS25MghcYgKYh/view?usp=sharing
