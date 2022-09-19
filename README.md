@@ -39,8 +39,6 @@ MONGO_URI='mongo+srv://<user>:<pass>@<host>:<port>/<database>?<connection option
 npm start
 ```
 
-## Screenshots
-
 
 ## URLs
 * Github: https://github.com/Fredbian/Social-Network-API-NoSQL-18 
